@@ -1,0 +1,34 @@
+#!/bin/sh
+
+if [ $# -gt 4 ] || [ $# -lt 4 ]
+then
+  echo ""
+  echo "ERROR! Wrong # of command line arguements"
+  echo ""
+  echo "USAGE:  $0 <bucket> <host> <access key id> <secret access key>"
+  echo ""
+  echo "  <bucket>             name of vault"
+  echo "  <host>               hostname or ip address of accesser (or load balancer)"
+  echo "  <access key id>      S3 Access Key ID"
+  echo "  <secret access key>  S3 Secret Access Key"
+  echo ""
+  exit 1 
+else 
+  aws_path=$1
+  host=$2
+  S3KEY=$3
+  S3SECRET=$4
+  date=$(date +"%a, %d %b %Y %T %z")
+  acl="x-amz-acl:public-read"
+  content_type='application/x-compressed-tar'
+  string="GET\n\n$content_type\n$date\n$acl\n/$aws_path"
+  signature=$(echo -en "${string}" | openssl sha1 -hmac "${S3SECRET}" -binary | base64)
+  curl -k -X "GET" \
+    -H "Host: $host" \
+    -H "Date: $date" \
+    -H "Content-Type: $content_type" \
+    -H "$acl" \
+    -H "Authorization: AWS ${S3KEY}:$signature" \
+    "https://$host/$aws_path"
+fi
+echo ""
