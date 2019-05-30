@@ -1,0 +1,37 @@
+#!/bin/sh
+
+if [ $# -gt 6 ] || [ $# -lt 6 ]
+then
+  echo ""
+  echo "ERROR! Wrong # of command line arguements"
+  echo ""
+  echo "USAGE:  $0 <path to file> <filename> <bucket> <host> <access key id> <secret access key>"
+  echo ""
+  echo "  <path to file>       local path (if current directory then '.'"
+  echo "  <filename>           name of file for operation"
+  echo "  <bucket>             name of vault"
+  echo "  <host>               hostname or ip address of accesser (or load balancer)"
+  echo "  <access key id>      S3 Access Key ID"
+  echo "  <secret access key>  S3 Secret Access Key"
+  echo ""
+  exit 1 
+else 
+  path=$1
+  file=$2
+  aws_path=$3
+  host=$4
+  S3KEY=$5
+  S3SECRET=$6
+  date=$(date +"%a, %d %b %Y %T %z")
+  acl="x-amz-acl:public-read"
+  content_type='application/x-compressed-tar'
+  string="PUT\n\n$content_type\n$date\n$acl\n/$aws_path/$file"
+  signature=$(echo -en "${string}" | openssl sha1 -hmac "${S3SECRET}" -binary | base64)
+  curl -k -X PUT -T "$path/$file" \
+    -H "Host: $host" \
+    -H "Date: $date" \
+    -H "Content-Type: $content_type" \
+    -H "$acl" \
+    -H "Authorization: AWS ${S3KEY}:$signature" \
+    "https://$host/$aws_path/$file"
+fi
