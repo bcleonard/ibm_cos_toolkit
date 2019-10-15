@@ -1,5 +1,5 @@
 # IBM COS S3 Access Scripts
-This is a simple set of bash scripts to access an on-premise IBM COS Solution with S3 Access Key Authentication.
+This is a simple set of bash scripts to access an on-premise IBM COS Solution with S3 Access Key Authentication.  They are designed to run on any IBM COS appliance, but should on any Linux or UNIX-like environment.
 
 * getS3 - script which will download a object from a bucket to a file
 * listS3 - script which will list objects in bucket
@@ -10,7 +10,7 @@ If you run each script without any arguements, you'll get a desciprtion of what 
 
 # Requirements
 
-This should run on any UNIX system that has the following commands:
+The following commands are required to run these scripts:
 
 * curl
 * base64
