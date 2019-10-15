@@ -1,3 +1,6 @@
+# THIS REPO IS ARCHIVED
+The new home is https://github.com/bcleonard/ibm_cos_s3_access_scripts.git
+
 # s3_access_key_auth
 simple bash scripts to access IBM COS with Access Key Authentication
 
