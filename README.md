@@ -7,3 +7,14 @@ This is a simple set of bash scripts to access an on-premise IBM COS Solution wi
 * rmS3 - script which will remove an object from a bucket
 
 If you run each script without any arguements, you'll get a desciprtion of what arguements needed for the script.
+
+# Requirements
+
+This should run on any UNIX system that has the following commands:
+
+* curl
+* base64
+
+# These scripts will not work as-is on the following:
+
+* AIX
