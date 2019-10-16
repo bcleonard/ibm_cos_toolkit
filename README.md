@@ -23,7 +23,7 @@ The following commands are required to run these scripts:
 ### Tested as working on:
 
 * IBM Cloud Object Storage Appliances running 3.14.x.x
-* Centos 7.x
+* CentOS 7.x
 
 ### These scripts will not work as-is on the following:
 
