@@ -1,34 +1,122 @@
-#!/bin/sh
+#!/bin/bash
 
-if [ $# -gt 4 ] || [ $# -lt 4 ]
+ENV_FILE=".env"
+
+#
+# loads the s3 env variables
+#
+load_s3_env_vars () {
+  if [ -f "${ENV_FILE}" ]
+  then
+    export $(grep -v '^#' ${ENV_FILE} | xargs)
+  fi
+}
+
+#
+# write s3 variables to file
+#
+write_s3_env_vars () {
+
+  echo "ACCESS_KEY_ID=${ACCESS_KEY_ID}" > ${ENV_FILE}
+  echo "SECRET_ACCESS_KEY=${SECRET_ACCESS_KEY}" >> ${ENV_FILE}
+}
+
+#
+# asks user to input s3 variables
+#
+ask_s3_env_vars () {
+
+  if [ -z "${ACCESS_KEY_ID}" ]
+  then
+    read -p 'Enter your Access Key ID: ' ACCESS_KEY_ID
+    export ACCESS_KEY_ID
+  fi
+  if [ -z "${SECRET_ACCESS_KEY}" ]
+  then
+    read -p  'Enter your Secret Access Key: ' SECRET_ACCESS_KEY
+    export SECRET_ACCESS_KEY
+  fi
+}
+
+#
+# check to see if s3 variables exist.  Ask use for them if they don't exist
+#
+check_s3_env_vars () {
+
+  while true
+  do
+    if [ -z "${ACCESS_KEY_ID}" ] || [ -z "${SECRET_ACCESS_KEY}" ]
+    then
+      ask_s3_env_vars
+    else
+      break
+    fi
+  done
+}
+
+#
+# Main Program
+#
+if [ $# -gt 1 ] || [ $# -lt 1 ]
 then
   echo ""
   echo "ERROR! Wrong # of command line arguements"
   echo ""
-  echo "USAGE:  $0 <bucket> <host> <access key id> <secret access key>"
+  echo "USAGE:  $0 <S3 URL>"
   echo ""
-  echo "  <bucket>             name of vault"
+  echo "  <S3 URL>       completed URL in the format of <access type>://<hostname>/<vault>"
+  echo ""
+  echo "  <access type>  either http or https"
+  echo "  <hostname>     either hostame or ip address of accesser"
+  echo "  <vault>        name of the vault you wish to list the contents of"
   echo "  <host>               hostname or ip address of accesser (or load balancer)"
-  echo "  <access key id>      S3 Access Key ID"
-  echo "  <secret access key>  S3 Secret Access Key"
+  echo ""
+  echo "  NOTE:  The system will prompt you for your S3 credentials and store them in the file .env"
+  echo "         This will allow you to share the S3 credentials between scripts and store them for future use"
   echo ""
   exit 1 
 else 
-  aws_path=$1
-  host=$2
-  S3KEY=$3
-  S3SECRET=$4
-  date=$(date +"%a, %d %b %Y %T %z")
-  acl="x-amz-acl:public-read"
-  content_type='application/x-compressed-tar'
-  string="GET\n\n$content_type\n$date\n$acl\n/$aws_path"
-  signature=$(echo -en "${string}" | openssl sha1 -hmac "${S3SECRET}" -binary | base64)
-  curl -k -X "GET" \
-    -H "Host: $host" \
-    -H "Date: $date" \
-    -H "Content-Type: $content_type" \
-    -H "$acl" \
-    -H "Authorization: AWS ${S3KEY}:$signature" \
-    "https://$host/$aws_path"
+
+  # load the s3 keys if they exist
+  load_s3_env_vars
+  # check for the s3 keys and prompt if you don't have them
+  check_s3_env_vars
+  # write the s3 keys
+  write_s3_env_vars
+
+  URL=${1}
+  HOST_URL=`dirname ${URL}`
+  ACCESSER=`basename ${HOST_URL}`
+  VAULT=`basename ${URL}`
+  resource="/${VAULT}"
+
+  contentType='application/x-compressed-tar'
+  dateValue=`date -R`
+
+  stringToSign="GET\n\n${contentType}\n${dateValue}\n${resource}"
+  s3Key=${ACCESS_KEY_ID}
+  s3Secret=${SECRET_ACCESS_KEY}
+  signature=`echo -en ${stringToSign} | openssl sha1 -hmac ${s3Secret} -binary | base64`
+  OUTPUT=`curl -k -X GET \
+    -H "Host: ${ACCESSER}" \
+    -H "Date: ${dateValue}" \
+    -H "Content-Type: ${contentType}" \
+    -H "Authorization: AWS ${s3Key}:${signature}" \
+    ${URL} 2>/dev/null`
+  IS_ERROR=`echo ${OUTPUT}| grep Error`
+  if [ ! -z "${IS_ERROR}" ]
+  then
+    echo ""
+    echo "THERE WAS AN ERROR"
+    echo ""
+    echo ${OUTPUT} | sed -e 's_>_&\
+_g'
+    exit 1
+  else
+    echo ""
+    echo "List of objects in bucket ${VAULT}:"
+    echo ""
+    echo ${OUTPUT} | grep -oPm1 "(?<=<Key>)[^<]+"
+    echo ""
+  fi
 fi
-echo ""

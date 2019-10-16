@@ -2,7 +2,7 @@
 This is a simple set of bash scripts to access an on-premise IBM COS Solution with S3 Access Key Authentication.  They are designed to run on any IBM COS appliance, but should on any Linux or UNIX-like environment.
 
 * getS3 - script which will download a object from a bucket to a file
-* listS3 - script which will list objects in bucket
+* listS3 - script which will list objects in bucket (updated - stores keys in external file for reuse)
 * putS3 - script which will upload a file to a bucket
 * rmS3 - script which will remove an object from a bucket
 * files.sh - script which will create and remove ten (10) 100mb files for testing purposes
