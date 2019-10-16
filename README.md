@@ -13,8 +13,12 @@ If you run each script without any arguements, you'll get a description of what 
 
 The following commands are required to run these scripts:
 
-* curl
 * base64
+* bash
+* curl
+* grep
+* openssl
+* sed
 
 ### Tested as working on:
 
