@@ -106,8 +106,8 @@ else
     -H "Date: ${dateValue}" \
     -H "Content-Type: ${contentType}" \
     -H "Authorization: AWS ${s3Key}:${signature}" \
-    ${URL} 2>/dev/null`
-  IS_ERROR=`echo ${OUTPUT}| grep Error`
+    ${URL} 2>&1`
+  IS_ERROR=`echo ${OUTPUT}| grep -i Error`
   if [ ! -z "${IS_ERROR}" ]
   then
     echo ""
