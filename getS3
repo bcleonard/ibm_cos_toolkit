@@ -1,37 +1,125 @@
-#!/bin/sh
+#!/bin/bash
 
-if [ $# -gt 6 ] || [ $# -lt 6 ]
+ENV_FILE=".env"
+
+#
+# loads the s3 env variables
+#
+load_s3_env_vars () {
+  if [ -f "${ENV_FILE}" ]
+  then
+    export $(grep -v '^#' ${ENV_FILE} | xargs)
+  fi
+}
+
+#
+# write s3 variables to file
+#
+write_s3_env_vars () {
+
+  echo "ACCESS_KEY_ID=${ACCESS_KEY_ID}" > ${ENV_FILE}
+  echo "SECRET_ACCESS_KEY=${SECRET_ACCESS_KEY}" >> ${ENV_FILE}
+}
+
+#
+# asks user to input s3 variables
+#
+ask_s3_env_vars () {
+
+  if [ -z "${ACCESS_KEY_ID}" ]
+  then
+    read -p 'Enter your Access Key ID: ' ACCESS_KEY_ID
+    export ACCESS_KEY_ID
+  fi
+  if [ -z "${SECRET_ACCESS_KEY}" ]
+  then
+    read -p  'Enter your Secret Access Key: ' SECRET_ACCESS_KEY
+    export SECRET_ACCESS_KEY
+  fi
+}
+
+#
+# check to see if s3 variables exist.  Ask use for them if they don't exist
+#
+check_s3_env_vars () {
+
+  while true
+  do
+    if [ -z "${ACCESS_KEY_ID}" ] || [ -z "${SECRET_ACCESS_KEY}" ]
+    then
+      ask_s3_env_vars
+    else
+      break
+    fi
+  done
+}
+
+#
+# Main Program
+#
+if [ $# -gt 2 ] || [ $# -lt 2 ]
 then
   echo ""
   echo "ERROR! Wrong # of command line arguements"
   echo ""
-  echo "USAGE:  $0 <path to file> <filename> <bucket> <host> <access key id> <secret access key>"
+  echo "USAGE:  $0 <file> <S3 URL>"
   echo ""
-  echo "  <path to file>       local path to place file (if current directory then '.'"
-  echo "  <filename>           name of file for operation"
-  echo "  <bucket>             name of vault"
-  echo "  <host>               hostname or ip address of accesser (or load balancer)"
-  echo "  <access key id>      S3 Access Key ID"
-  echo "  <secret access key>  S3 Secret Access Key"
+  echo "  <file>         local location of object to get (include full or relative path)"
+  echo "  <S3 URL>       completed URL in the format of <access type>://<hostname>/<vault>/<object>"
+  echo ""
+  echo "  <access type>  either http or https"
+  echo "  <hostname>     either hostame or ip address of accesser"
+  echo "  <vault>        name of the vault where the object is stored"
+  echo "  <object>       name of object in ICOS"
+  echo ""
+  echo "  NOTE:  The system will prompt you for your S3 credentials and store them in the file .env"
+  echo "         This will allow you to share the S3 credentials between scripts and store them for future use"
   echo ""
   exit 1 
 else 
-  path=$1
-  file=$2
-  aws_path=$3
-  host=$4
-  S3KEY=$5
-  S3SECRET=$6
-  date=$(date +"%a, %d %b %Y %T %z")
-  acl="x-amz-acl:public-read"
-  content_type='application/x-compressed-tar'
-  string="GET\n\n$content_type\n$date\n$acl\n/$aws_path/$file"
-  signature=$(echo -en "${string}" | openssl sha1 -hmac "${S3SECRET}" -binary | base64)
-  curl -k -X GET -o "$path/$file" \
-    -H "Host: $host" \
-    -H "Date: $date" \
-    -H "Content-Type: $content_type" \
-    -H "$acl" \
-    -H "Authorization: AWS ${S3KEY}:$signature" \
-    "https://$host/$aws_path/$file"
+
+  # load the s3 keys if they exist
+  load_s3_env_vars
+  # check for the s3 keys and prompt if you don't have them
+  check_s3_env_vars
+  # write the s3 keys
+  write_s3_env_vars
+
+  FILENAME=${1}
+  URL=${2}
+  OBJECT=`basename ${URL}`
+  TEMP_URL=`dirname ${URL}`
+  HOST_URL=`dirname ${TEMP_URL}`
+  ACCESSER=`basename ${HOST_URL}`
+  VAULT=`basename ${TEMP_URL}`
+  resource="/${VAULT}/${OBJECT}"
+
+  contentType='application/x-compressed-tar'
+  dateValue=`date -R`
+
+  stringToSign="GET\n\n${contentType}\n${dateValue}\n${resource}"
+  s3Key=${ACCESS_KEY_ID}
+  s3Secret=${SECRET_ACCESS_KEY}
+  signature=`echo -en ${stringToSign} | openssl sha1 -hmac ${s3Secret} -binary | base64`
+  OUTPUT=`curl -k -X GET -o ${FILENAME} \
+    -H "Host: ${ACCESSER}" \
+    -H "Date: ${dateValue}" \
+    -H "Content-Type: ${contentType}" \
+    -H "Authorization: AWS ${s3Key}:${signature}" \
+    ${URL} 2>&1`
+  IS_ERROR=`grep -i Error ${FILENAME}`
+  if [ ! -z "${IS_ERROR}" ]
+  then
+    echo ""
+    echo "THERE WAS AN ERROR"
+    echo ""
+#    echo ${OUTPUT} | sed -e 's_>_&\
+    cat ${FILENAME} | sed -e 's_>_&\
+_g'
+    exit 1
+  else
+    echo ""
+    echo "Object ${OBJECT} successfully downloaded to file ${FILENAME}"
+    echo ""
+  fi
 fi
