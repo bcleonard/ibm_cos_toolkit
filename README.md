@@ -2,7 +2,7 @@
 
 This is a simple set of bash scripts to access an on-premise IBM COS Solution with S3 Access Key Authentication.  They are designed to run on any IBM COS appliance, but should on any Linux or UNIX-like environment.
 
-After the first use of **__any__** of these scripts a file ".env" will be created in your current directory.  This file will contain your Access Key ID and Secret Access Key.  Storing these files locally will allow you to resuse *any* of the scripts without having to reenter your keys.  To use difference keys, just delete the ".env" file and enter the new keys when you run the script again.
+After the first use of **_any_** of these scripts a file ".env" will be created in your current directory.  This file will contain your Access Key ID and Secret Access Key.  Storing these files locally will allow you to resuse *any* of the scripts without having to reenter your keys.  To use difference keys, just delete the ".env" file and enter the new keys when you run the script again.
 
 * getS3 - script which will download a object from a bucket to a file
 * listS3 - script which will list objects in bucket
