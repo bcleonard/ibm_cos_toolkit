@@ -1,0 +1,11 @@
+version: '2'
+
+services:
+  proxy:
+    image: haproxy:latest
+    container_name: icoslb
+    ports:
+      - 443:443
+      - 1936:1936
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
