@@ -6,5 +6,10 @@ This toolkit contains:
 
 * [s3 cli access scripts](s3_access_scripts/)
 
-These scripts are provided as-is without any support.  Please use accordingly.
+The scripts and information provided in this toolkit are provided as-is, without any support.  Please use accordingly.
+
+Here is a list of other tool, scripts, etc. that you may find useful when administrating IBM COS:
+
+* (testssl.sh)[https://testssl.sh/] - Testing TLS/SSL encryption
+* (Object Generator)[https://github.com/IBM/og] - http load tool designed for load testing object storage api's
 
