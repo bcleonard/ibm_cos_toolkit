@@ -10,6 +10,6 @@ The scripts and information provided in this toolkit are provided as-is, without
 
 Here is a list of other tool, scripts, etc. that you may find useful when administrating IBM COS:
 
-* [testssl.sh](https://testssl.sh/0 - Testing TLS/SSL encryption
-* [Object Generator](https://github.com/IBM/og0 - http load tool designed for load testing object storage api's
+* [testssl.sh](https://testssl.sh/] - Testing TLS/SSL encryption
+* [Object Generator](https://github.com/IBM/og] - http load tool designed for load testing object storage api's
 
