@@ -2,10 +2,11 @@ version: '2'
 
 services:
   proxy:
-    image: haproxy:latest
+    build: .
     container_name: icoslb
     ports:
       - 443:443
       - 1936:1936
     volumes:
+      - ./accesser_check.sh:/usr/local/bin/accesser_check.sh
       - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
