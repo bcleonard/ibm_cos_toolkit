@@ -15,7 +15,7 @@ This is providing as proof-of-concept configuration to assist with testing featu
 # Install
 
 * Download the tooklit
-* Move the following files to your preferred location
+* Move the following files to your preferred location:  
    haproxy.cfg  
    docker-compose.yml  
    Dockfile  
