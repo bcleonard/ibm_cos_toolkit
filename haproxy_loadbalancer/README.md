@@ -2,6 +2,8 @@
 
 This is the configuration file for haproxy which, when running, will provide you with a very basic loadbalancer for use in front of Accessers.  This configuration will only provide support over port 443 (https) and not port 80 (http).  This configuration will pass through all SSL connections.  It will not intercept and/or modify SSL connections.
 
+This configuration uses an external check with the script accesser_check.sh.
+
 This is providing as proof-of-concept configuration to assist with testing feature/functionality.  It is not designed for use in production.
 
 # Requirements/Prerequisites
@@ -12,7 +14,11 @@ This is providing as proof-of-concept configuration to assist with testing featu
 # Install
 
 * Download the tooklit
-* Move the haproxy.cfg and docker-compose.yml to your preferred location
+* Move the following files to your preferred location
+   haproxy.cfg
+   docker-compose.yml
+   Dockfile
+   accesser_check.sh
 
 # Configure
 
@@ -26,8 +32,11 @@ This is providing as proof-of-concept configuration to assist with testing featu
 docker-compose up -d
 ```
 
+This will download the latest version of the haproxy docker container, add the "curl" package to it and start it up.
+
 ### Tested as working on:
 
 * IBM Cloud Object Storage Appliances running 3.14.x.x
 * Docker running on CentOS 7.x
+* Internet Connection (to download haproxy docker container and add curl package)
 
