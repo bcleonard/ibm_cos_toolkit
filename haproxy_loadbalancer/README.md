@@ -10,15 +10,16 @@ This is providing as proof-of-concept configuration to assist with testing featu
 
 * [Docker](https://www.docker.com/)
 * [Docker Compose](https://docs.docker.com/compose/)
+* internet connection
 
 # Install
 
 * Download the tooklit
 * Move the following files to your preferred location
-   haproxy.cfg
-   docker-compose.yml
-   Dockfile
-   accesser_check.sh
+   haproxy.cfg  
+   docker-compose.yml  
+   Dockfile  
+   accesser_check.sh  
 
 # Configure
 
