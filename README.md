@@ -14,4 +14,4 @@ Here is a list of other tool, scripts, etc. that you may find useful when admini
 * [AWS Command Line Interface](https://aws.amazon.com/cli/) - Unified tool to manage AWS services
 * [Object Generator](https://github.com/IBM/og) - http load tool designed for load testing object storage api's
 * [testssl.sh](https://testssl.sh/) - Testing TLS/SSL encryption
-
+* [s3cme](https://s3tools.org/s3cmd) - Command line S3 Client and Backup for Linux and Mac
