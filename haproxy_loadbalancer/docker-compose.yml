@@ -10,3 +10,4 @@ services:
     volumes:
       - ./accesser_check.sh:/usr/local/bin/accesser_check.sh
       - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    restart: unless-stopped
