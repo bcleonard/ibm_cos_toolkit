@@ -1,43 +1,46 @@
 # Simple, basic HAproxy Loadbalancer
-
-This is the configuration file for haproxy which, when running, will provide you with a very basic loadbalancer for use in front of Accessers.  This configuration will only provide support over port 443 (https) and not port 80 (http).  This configuration will pass through all SSL connections.  It will not intercept and/or modify SSL connections.
+## 
+This configuration file enhances haproxy by:
+- Providing a very basic loadbalancer for use in front of Accessers.
+- Supporting over port 443 (https) and not port 80(http). 
+- Passing through all SSL connections without intercepting or modifying them.
 
 This configuration uses an external check with the script accesser_check.sh.
 
-This is providing as proof-of-concept configuration to assist with testing feature/functionality.  It is not designed for use in production.
+**NOTICE:  This provides a proof-of-concept configuration.  The configuration assists with testing feature/functionality.  It is not designed for production.**
 
-# Requirements/Prerequisites
 
-* [Docker](https://www.docker.com/)
+
+## Requirements/Prerequisites
+
+* IBM Cloud Object Storage Appliances (tested to run 3.14.x.x)
+* [Docker](https://www.docker.com/) (tested for CentOS 7.x )
 * [Docker Compose](https://docs.docker.com/compose/)
-* internet connection
+* Internet connection (to download container and add curl package)
 
-# Install
 
-* Download the tooklit
-* Move the following files to your preferred location:  
-   haproxy.cfg  
-   docker-compose.yml  
-   Dockfile  
-   accesser_check.sh  
 
-# Configure
+## Install
 
-* Modify the haproxy.cfg file, changing the server entries at the bottom of the file to match the accessers in your environment.
+1. Download the tooklit
+2. Move the following files to your preferred location:  
+	- haproxy.cfg
+	- docker-compose.yml  
+	- Dockfile  
+	- accesser_check.sh  
 
-# Run
+## Configure
 
-* from the command line, run the following:
+1. Modify the haproxy.cfg file: 
+	- Change the server entries(at the bottom of the file) to match the accessers in your environment.
 
-```bash
-docker-compose up -d
-```
+## Run
 
-This will download the latest version of the haproxy docker container, add the "curl" package to it and start it up.
+1. Download the latest version of the haproxy docker container
+	- Run the following from the command line:
 
-### Tested as working on:
+		```docker-compose up -d ```
+	- Add the "curl" package 
+	- Start up Docker
 
-* IBM Cloud Object Storage Appliances running 3.14.x.x
-* Docker running on CentOS 7.x
-* Internet Connection (to download haproxy docker container and add curl package)
 
