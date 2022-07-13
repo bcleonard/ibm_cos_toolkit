@@ -1,5 +1,5 @@
 # Simple, basic HAproxy Loadbalancer
-## 
+
 This configuration file enhances haproxy by:
 - Providing a very basic loadbalancer for use in front of Accessers.
 - Supporting over port 443 (https) and not port 80(http). 
@@ -13,12 +13,15 @@ This configuration uses an external check with the script accesser_check.sh.
 
 ## Requirements/Prerequisites
 
-* IBM Cloud Object Storage Appliances (tested to run 3.14.x.x)
-* [Docker](https://www.docker.com/) (tested for CentOS 7.x )
-* [Docker Compose](https://docs.docker.com/compose/)
-* Internet connection (to download container and add curl package)
+* IBM Cloud Object Storage Appliances
+* [Docker](https://www.docker.com/)
+* [Docker Compose]
+* Internet connection
 
-
+## Tested as working on:
+- IBM Cloud Object Storage Appliances running 3.14.x.x
+- Docker running on CentOS 7.x
+- Internet Connection (to download haproxy docker container and add curl package)
 
 ## Install
 
