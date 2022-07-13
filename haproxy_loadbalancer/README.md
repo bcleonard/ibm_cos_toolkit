@@ -18,7 +18,7 @@ This configuration uses an external check with the script accesser_check.sh.
 * [Docker Compose]
 * Internet connection
 
-## Tested as working on:
+## Tested for
 - IBM Cloud Object Storage Appliances running 3.14.x.x
 - Docker running on CentOS 7.x
 - Internet Connection (to download haproxy docker container and add curl package)
