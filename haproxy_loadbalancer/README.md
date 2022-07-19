@@ -11,6 +11,7 @@ This is providing as proof-of-concept configuration to assist with testing featu
 * [Docker](https://www.docker.com/)
 * [Docker Compose](https://docs.docker.com/compose/)
 * internet connection
+* Service Port 8337 enabled on IBM COS Accessers
 
 # Install
 
