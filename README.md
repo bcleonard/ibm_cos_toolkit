@@ -16,7 +16,7 @@ Other resources for administrating IBM COS:
 * [AWS Command Line Interface](https://aws.amazon.com/cli/) (unified tool to manage AWS services)
 * [Object Generator](https://github.com/IBM/og) (http tool for load testing object storage APIs)
 * [testssl.sh](https://testssl.sh/) (testing TLS/SSL encryption)
-* [s3cme](https://s3tools.org/s3cmd) (command line S3 Client and Backup for Linux and Mac)
+* [s3cmd](https://s3tools.org/s3cmd) (command line S3 Client and Backup for Linux and Mac)
 
 Other IBM COS resources:
 * [Infrastructure-as-code for IBM COS Trial VMs](https://github.com/hseipp/ibm-cos-vm-iac) (demonstrate virtual variant of the IBM Cloud Object Storage solution)
