@@ -1,17 +1,23 @@
 # IBM COS Toolkit
+This toolkit is for IBM Cloud Object Storage Administrators.  It provides tips, tools, and scripts for better environment management.  
 
-This toolkit is design to provide IBM Cloud Object Storage Administrates tips, tools and script to help manage the environment.
+**Notice:  The scripts and information in this toolkit are provided as-is, without any support.**
 
-This toolkit contains:
-
+Included:
 * [s3 cli access scripts](s3_access_scripts/)
 * [Basic HAProxy Load Balancer](haproxy_loadbalancer/)
 
-The scripts and information provided in this toolkit are provided as-is, without any support.  Please use accordingly.
+IBM published resources for IBM COS:
+* [IBM Cloud Object Storage System documentation](https://www.ibm.com/support/knowledgecenter/en/STXNRM) (IBM Cloud Object Storage System documentation)
+* [IBM Cloud Object Storage System Product Guide](https://www.redbooks.ibm.com/abstracts/sg248439.html) (IBM Redbook)
+* [IBM Cloud Object Storage Concepts and Architecture](https://www.redbooks.ibm.com/abstracts/redp5537.html) (IBM Redpaper)
 
-Here is a list of other tool, scripts, etc. that you may find useful when administrating IBM COS:
+Other resources for administrating IBM COS:
+* [AWS Command Line Interface](https://aws.amazon.com/cli/) (unified tool to manage AWS services)
+* [Object Generator](https://github.com/IBM/og) (http tool for load testing object storage APIs)
+* [testssl.sh](https://testssl.sh/) (testing TLS/SSL encryption)
+* [s3cmd](https://s3tools.org/s3cmd) (command line S3 Client and Backup for Linux and Mac)
 
-* [AWS Command Line Interface](https://aws.amazon.com/cli/) - Unified tool to manage AWS services
-* [Object Generator](https://github.com/IBM/og) - http load tool designed for load testing object storage api's
-* [testssl.sh](https://testssl.sh/) - Testing TLS/SSL encryption
-* [s3cme](https://s3tools.org/s3cmd) - Command line S3 Client and Backup for Linux and Mac
+Other IBM COS resources:
+* [Infrastructure-as-code for IBM COS Trial VMs](https://github.com/hseipp/ibm-cos-vm-iac) (demonstrate virtual variant of the IBM Cloud Object Storage solution)
+

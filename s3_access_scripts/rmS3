@@ -67,7 +67,7 @@ then
   echo "  <S3 URL>       completed URL in the format of <access type>://<hostname>/<vault>/<object>"
   echo ""
   echo "  <access type>  either http or https"
-  echo "  <hostname>     either hostame or ip address of accesser"
+  echo "  <hostname>     either hostame or ip address of accesser (or load balancer)"
   echo "  <vault>        name of the vault you wish to access"
   echo "  <object>       name of object in ICOS to remove"
   echo ""

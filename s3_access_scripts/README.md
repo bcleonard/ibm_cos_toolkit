@@ -25,8 +25,8 @@ The following commands are required to run these scripts:
 
 ### Tested as working on:
 
-* IBM Cloud Object Storage Appliances running 3.14.x.x
-* CentOS 7.x
+* IBM Cloud Object Storage Appliances running 3.15.x.x
+* RHEL/CentOS/Rocky 8.x
 
 ### These scripts will not work as-is on the following:
 
