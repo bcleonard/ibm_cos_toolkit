@@ -5,6 +5,7 @@ services:
     build: .
     container_name: icoslb
     ports:
+      - 80:80
       - 443:443
       - 1936:1936
     volumes:
