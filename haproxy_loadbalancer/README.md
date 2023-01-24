@@ -41,3 +41,7 @@ This will download the latest version of the haproxy docker container, add the "
 * IBM Cloud Object Storage Appliances running 3.17.x.x & higher
 * Docker running on CentOS/Rocky Linux/RHEL Variants 8.x
 * Internet Connection (to download haproxy docker container and add curl package)
+
+### Alternate configurations:
+
+Check out the addtional configurations in the alt_configs directory.
