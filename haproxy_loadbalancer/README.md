@@ -36,6 +36,9 @@ docker compose up -d
 
 This will download the latest version of the haproxy docker container, add the "curl" package to it and start it up.
 
+# Limitations
+The default configuration (haproxy.cfg / accesser_check.sh) will only work for an IBM COS solution deployed in standard mode only.  See the alt_configs directory for a container mode only configuration.
+
 ### Tested as working on:
 
 * IBM Cloud Object Storage Appliances running 3.17.x.x & higher

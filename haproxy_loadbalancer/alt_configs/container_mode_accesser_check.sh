@@ -5,18 +5,22 @@ VSP=$2 # Virtual Service Port (VPT)
 RSIP=$3 # Real Server IP (RIP)
 RSP=$4 # Real Server Port (RPT) 
 CSIP=$5 # Check Source IP 
+CM_PORT_HTTP=8337
+CM_PORT_HTTPS=8338
 PORT_TYPE=http
 
 CURL=/usr/bin/curl
 GREP=/bin/grep
 
-# for a ssl connection you need to check the status via secure port
+# for container mode, you need to check the service ports for non-ssl and ssl
 if [[ "${RSP}" -eq 80 ]]
 then
   PORT_TYPE="http"
+  RSP=${CM_PORT_HTTP}
 elif [[ "${RSP}" -eq 443 ]]
 then
   PORT_TYPE="https"
+  RSP=${CM_PORT_HTTPS}
 fi
 
 echo "checking ${PORT_TYPE}:${RSIP}:${RSP}"
