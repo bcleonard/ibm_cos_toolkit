@@ -25,8 +25,10 @@ The following commands are required to run these scripts:
 
 ### Tested as working on:
 
-* IBM Cloud Object Storage Appliances running 3.15.x.x
-* RHEL/CentOS/Rocky 8.x
+* IBM Cloud Object Storage Appliances running 3.17.x.x
+** Vault Mode
+** Container Mode
+* Debian GNU/Linux 11 (Bullseye)
 
 ### These scripts will not work as-is on the following:
 
@@ -40,5 +42,4 @@ If you have any problems, I recommend the following troubleshooting steps (in or
 1.  Download the latest official release.  Its possible what you've pulled or cloned is a set of non-working scripts.  Releases should work.
 2.  Verify that your local OS has all the required commands
 3.  If the scripts run without any syntax errors or missing commands and your getting access key errors, the most likely caused by your specific version of openssl.  I've discovered that openssl on Mac OS Mojave generantes an incorrect signature which causes access key errors.  If thats the case, your out of luck.  I have not investigated that type of error any further than to discover it doesn't work.  I recommmend trying on a different OS.
-
 
