@@ -2,7 +2,7 @@
 
 This is a simple set of bash scripts to access an on-premise IBM COS Solution with S3 Access Key Authentication.  They are designed to run on any IBM COS appliance, but should on any Linux or UNIX-like environment.
 
-After the first use of **_any_** of these scripts a file "*.env*" will be created in your current directory.  This file will contain your Access Key ID and Secret Access Key.  Storing these keys to a a external file will allow you to use **_any_** of the scripts without having to reenter your keys.  To use different keys, just delete the "*.env*" file and enter the new keys when you run the script again.
+After the first use of **_any_** of these scripts a file _.env_ will be created in your current directory.  This file will contain your Access Key ID and Secret Access Key.  Storing these keys to an external file will allow you to use **_any_** of the scripts without having to reenter your keys.  To use different keys, just delete the _s.env_ file and enter the new keys when you run the script again.
 
 * getS3 - script which will download a object from a bucket to a file
 * listS3 - script which will list objects in bucket
@@ -12,7 +12,7 @@ After the first use of **_any_** of these scripts a file "*.env*" will be create
 
 If you run each script without any arguments, you'll get a description of what arguments are needed for the script.
 
-# Requirements
+## Requirements
 
 The following commands are required to run these scripts:
 
@@ -23,23 +23,24 @@ The following commands are required to run these scripts:
 * openssl
 * sed
 
-### Tested as working on:
+## Tested
 
 * IBM Cloud Object Storage Appliances running 3.17.x.x
-** Vault Mode
-** Container Mode
+  * Vault Mode
+  * Container Mode
 * Debian GNU/Linux 11 (Bullseye)
 
-### These scripts will not work as-is on the following:
+## Not Working
+
+These scripts will not work as-is on the following:
 
 * AIX
 * Mac OS 10.14.6
 
-### Problems & Troubleshooting
+## Problems & Troubleshooting
 
 If you have any problems, I recommend the following troubleshooting steps (in order):
 
-1.  Download the latest official release.  Its possible what you've pulled or cloned is a set of non-working scripts.  Releases should work.
-2.  Verify that your local OS has all the required commands
-3.  If the scripts run without any syntax errors or missing commands and your getting access key errors, the most likely caused by your specific version of openssl.  I've discovered that openssl on Mac OS Mojave generantes an incorrect signature which causes access key errors.  If thats the case, your out of luck.  I have not investigated that type of error any further than to discover it doesn't work.  I recommmend trying on a different OS.
-
+1. Download the latest official release.  Its possible what you've pulled or cloned is a set of non-working scripts.  Releases should work.
+1. Verify that your local OS has all the required commands
+1. If the scripts run without any syntax errors or missing commands and your getting access key errors, the most likely caused by your specific version of openssl.  I've discovered that openssl on Mac OS Mojave generates an incorrect signature which causes access key errors.  If thats the case, your out of luck.  I have not investigated that type of error any further than to discover it doesn't work.  I recommend trying on a different OS.

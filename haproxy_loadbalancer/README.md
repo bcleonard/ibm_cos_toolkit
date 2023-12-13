@@ -6,27 +6,27 @@ This configuration uses an external check with the script accesser_check.sh.
 
 This is providing as proof-of-concept configuration to assist with testing feature/functionality.  It is not designed for use in production.
 
-# Requirements/Prerequisites
+## Requirements/Prerequisites
 
 * [Docker](https://www.docker.com/)
 * [Docker Compose](https://docs.docker.com/compose/)
 * internet connection
 * Service Port 8337 enabled on IBM COS Accessers
 
-# Install
+## Install
 
-* Download the tooklit
+* Download the toolkit
 * Move the following files to your preferred location:  
    haproxy.cfg  
    docker-compose.yml  
    Dockfile  
    accesser_check.sh  
 
-# Configure
+## Configure
 
 * Modify the haproxy.cfg file, changing the server entries at the bottom of the file to match the accessers in your environment.
 
-# Run
+## Run
 
 * from the command line, run the following:
 
@@ -36,15 +36,16 @@ docker compose up -d
 
 This will download the latest version of the haproxy docker container, add the "curl" package to it and start it up.
 
-# Limitations
+## Limitations
+
 The default configuration (haproxy.cfg / accesser_check.sh) will only work for an IBM COS solution deployed in standard mode only.  See the alt_configs directory for a container mode only configuration.
 
-### Tested as working on:
+## Tested
 
 * IBM Cloud Object Storage Appliances running 3.17.x.x & higher
 * Docker running on CentOS/Rocky Linux/RHEL Variants 8.x
 * Internet Connection (to download haproxy docker container and add curl package)
 
-### Alternate configurations:
+## Alternate configurations
 
-Check out the addtional configurations in the alt_configs directory.
+Check out the adsditional configurations in the alt_configs directory.
