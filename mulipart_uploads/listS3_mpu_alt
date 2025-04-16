@@ -1,0 +1,77 @@
+#!/bin/bash
+
+# Ensure the necessary tools are installed
+if ! command -v curl &> /dev/null; then
+    echo "curl is not installed. Please install it."
+    exit 1
+fi
+
+# Generic S3-compatible storage provider credentials and settings
+S3_ACCESS_KEY="TteVeJjF4jUPPWv75oe5"
+S3_SECRET_KEY="jDb1AWAxnEIID223nTQOe9vltUdYCDsFH8EpSRA9"
+S3_ENDPOINT="icoslbcm.internal.stygianresearch.com"  # Replace with your S3 provider's endpoint
+BUCKET_NAME="bcl_test_01"
+REGION="us-east-1"  # May not be used by all providers
+
+# Current date in the format required for the request
+DATE=$(date -u +"%Y%m%dT%H%M%SZ")
+DATE_SCOPE=$(date -u +"%Y%m%d")
+
+# Host for the request
+#HOST="${BUCKET_NAME}.your-s3-endpoint.com"  # Adjust according to your provider's pattern
+HOST="${S3_ENDPOINT}"
+CANONICAL_URI="/"
+CANONICAL_QUERY_STRING="${BUCKET_NAME}?uploads="
+#CANONICAL_QUERY_STRING=""
+CANONICAL_HEADERS="host:${HOST}\nx-amz-content-sha256:UNSIGNED-PAYLOAD\nx-amz-date:${DATE}\n"
+SIGNED_HEADERS="host;x-amz-content-sha256;x-amz-date"
+PAYLOAD_HASH="UNSIGNED-PAYLOAD"
+
+# Create the canonical request
+CANONICAL_REQUEST="GET ${CANONICAL_URI}${CANONICAL_QUERY_STRING} HTTP/1.1
+${CANONICAL_HEADERS}
+${SIGNED_HEADERS}
+${PAYLOAD_HASH}"
+
+echo "Canonical Request:"
+echo "$CANONICAL_REQUEST"
+
+# Create the string to sign
+ALGORITHM="AWS4-HMAC-SHA256"
+CREDENTIAL_SCOPE="${DATE_SCOPE}/${REGION}/s3/aws4_request"
+STRING_TO_SIGN="${ALGORITHM}
+${DATE}
+${CREDENTIAL_SCOPE}
+$(echo -n "${CANONICAL_REQUEST}" | openssl dgst -sha256 | awk '{print $2}')"
+
+echo "String to Sign:"
+echo "$STRING_TO_SIGN"
+
+# Generate the signing key
+kSecret="AWS4${S3_SECRET_KEY}"
+kDate=$(echo -n "${DATE_SCOPE}" | openssl dgst -sha256 -hmac "${kSecret}" -binary)
+kRegion=$(echo -n "${REGION}" | openssl dgst -sha256 -hmac "${kDate}" -binary)
+kService=$(echo -n "s3" | openssl dgst -sha256 -hmac "${kRegion}" -binary)
+kSigning=$(echo -n "aws4_request" | openssl dgst -sha256 -hmac "${kService}" -binary)
+
+# Generate the signature
+SIGNATURE=$(echo -n "${STRING_TO_SIGN}" | openssl dgst -sha256 -hmac "${kSigning}" | awk '{print $2}')
+
+echo "Signature:"
+echo "$SIGNATURE"
+
+# Construct the authorization header
+AUTH_HEADER="${ALGORITHM} Credential=${S3_ACCESS_KEY}/${CREDENTIAL_SCOPE}, SignedHeaders=${SIGNED_HEADERS}, Signature=${SIGNATURE}"
+
+# Make the request
+RESPONSE=$(curl -s -H "x-amz-date: ${DATE}" -H "x-amz-content-sha256: ${PAYLOAD_HASH}" -H "Authorization: ${AUTH_HEADER}" "https://${HOST}/${BUCKET_NAME}?uploads")
+
+# Check for errors in the response
+if [ $? -ne 0 ]; then
+    echo "Error making request to list multipart uploads for bucket $BUCKET_NAME"
+    exit 1
+fi
+
+# Print the response
+echo "List of incomplete multipart uploads for bucket $BUCKET_NAME:"
+echo "$RESPONSE"
